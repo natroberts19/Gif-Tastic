@@ -8,7 +8,8 @@
 
 <body>
 <h1>All Things Buffalo - Some GIPHY fun!</h1>
-  <div id="dump"></div>
+  <div id="giphy-dump"></div>
+  <div id="button-dump"></div>
 
  <!-- This form will be where users input data about the gif's -->
  <form id="giphy-form">
@@ -22,7 +23,34 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
-    
+  // Initial array of giphy buttons
+  var giphys = ["Buffalo Bills", "Buffalo Sabres", "Winter is (Always) Coming", "Buffalo Wings", "Ice Fishing", "Curling"];
+  console.log(giphys);
+
+      // Function for dumping the JSON content for each button into the div
+      function displayGiphyInfo() {
+
+        var APIKey = "";
+// Example queryURL for Giphy API:
+    // var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC";
+    // var queryURL = "https://api.giphy.com/v1/gifs/search?q=buffalo+wings&api_key=dc6zaTOxFJmzC&limit=1";
+
+      // This GIPHY API sample code accomplishes the same as the AJAX method:
+      var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+bills+football&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+sabres+hockey&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=winter+is+coming&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+wings&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=ice+fishing&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=curling&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+
+      }
+
   $("#find-giphy").on("click", function(event) {
     // event.preventDefault() can be used to prevent an event's default behavior.
         // Here, it prevents the submit button from trying to submit a form when clicked
@@ -41,31 +69,12 @@
               method: 'GET'
             }).done(function(response) {
               console.log(response.data[1].rating);
-              $("#dump").html("<h1> User Input: " +response.data[1].rating+ "</h1>");
+              $("#giphy-dump").html("<h3> User Input: " +response.data[1].rating+ "</h3>");
+              $("#giphy-dump").append("<h3> User Input: " +response.data[1].url+ "</h3>");
               // $("#dump").text(JSON.stringify(response.data[1]));
             });
 
         });
-    
-    // Example queryURL for Giphy API
-    // var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC";
-    // var queryURL = "https://api.giphy.com/v1/gifs/search?q=buffalo+wings&api_key=dc6zaTOxFJmzC&limit=1";
-
-    
-
-      // This accomplishes the same as the method above:
-          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+bills+football&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
-          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+sabres+hockey&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
-          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=winter+is+coming&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
-          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+wings&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
-          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=ice+fishing&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
-          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=curling&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
   
   
   </script>
