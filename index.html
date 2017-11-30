@@ -7,24 +7,67 @@
 </head>
 
 <body>
-<h1>Practice Giphy Activity </h1>
-  <div id="practice"></div>
+<h1>All Things Buffalo - Some GIPHY fun!</h1>
+  <div id="dump"></div>
+
+ <!-- This form will be where users input data about the gif's -->
+ <form id="giphy-form">
+  <label for="giphy-input">Search for a GIPHY</label>
+  <input type="text" id="giphy-input"><br>
+
+  <!-- This button will trigger our AJAX call -->
+  <input id="find-giphy" type="submit" value="Giphy Search">
+</form>
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
     
+  $("#find-giphy").on("click", function(event) {
+    // event.preventDefault() can be used to prevent an event's default behavior.
+        // Here, it prevents the submit button from trying to submit a form when clicked
+        event.preventDefault();
+
     // Check Stack: https://stackoverflow.com/questions/41620816/giphy-api-how-do-i-search-for-giphs
+          // Create the variable for the form input
+          var userInput = $('#giphy-input').val().trim();
+          // Change the input to suit the API (ie change spaces to +)
+              userInput = userInput.replace(/ /g, "+");
+          // Create the Giphy API URL for the user input field
+          var queryURL = 'http://api.giphy.com/v1/gifs/search?q=' + userInput + '&rating=g&api_key=dc6zaTOxFJmzC&limit=10';
+
+            $.ajax({
+              url: queryURL,
+              method: 'GET'
+            }).done(function(response) {
+              console.log(response.data[1].rating);
+              $("#dump").html("<h1> User Input: " +response.data[1].rating+ "</h1>");
+              // $("#dump").text(JSON.stringify(response.data[1]));
+            });
+
+        });
     
     // Example queryURL for Giphy API
-    var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC";
+    // var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC";
+    // var queryURL = "https://api.giphy.com/v1/gifs/search?q=buffalo+wings&api_key=dc6zaTOxFJmzC&limit=1";
 
-    $.ajax({
-      url: queryURL,
-      method: 'GET'
-    }).done(function(response) {
-      console.log(response);
-      $("#practice").text("<h1>" +response.data.image_url+ "Trending</h1>");
-    });
+    
+
+      // This accomplishes the same as the method above:
+          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+bills+football&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+sabres+hockey&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=winter+is+coming&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+wings&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=ice+fishing&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=curling&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
+          xhr.done(function(data) { console.log("success got data", data); });
+  
+  
   </script>
 
 </body>
