@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Giphy API</title>
+</head>
+
+<body>
+<h1>Practice Giphy Activity </h1>
+  <div id="practice"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    
+    // Check Stack: https://stackoverflow.com/questions/41620816/giphy-api-how-do-i-search-for-giphs
+    
+    // Example queryURL for Giphy API
+    var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC";
+
+    $.ajax({
+      url: queryURL,
+      method: 'GET'
+    }).done(function(response) {
+      console.log(response);
+      $("#practice").text("<h1>" +response.data.image_url+ "Trending</h1>");
+    });
+  </script>
+
+</body>
+
+</html>
