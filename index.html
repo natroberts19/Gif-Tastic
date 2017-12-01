@@ -3,78 +3,112 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Giphy API</title>
+  <title>All Things Buffalo - Some GIPHY fun!</title>
 </head>
 
 <body>
+  <div class="container">
 <h1>All Things Buffalo - Some GIPHY fun!</h1>
-  <div id="giphy-dump"></div>
-  <div id="button-dump"></div>
-
- <!-- This form will be where users input data about the gif's -->
- <form id="giphy-form">
+<div id="buttons-dump"></div>
+<div id="giphy-dump"></div>
+<!-- This form will be where users input data about the gif's -->
+<form id="giphy-form">
   <label for="giphy-input">Search for a GIPHY</label>
   <input type="text" id="giphy-input"><br>
-
   <!-- This button will trigger our AJAX call -->
   <input id="find-giphy" type="submit" value="Giphy Search">
 </form>
 
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
   // Initial array of giphy buttons
-  var giphys = ["Buffalo Bills", "Buffalo Sabres", "Winter is (Always) Coming", "Buffalo Wings", "Ice Fishing", "Curling"];
+  var giphys = ["Buffalo Bills", "Buffalo Sabres", "Winter is (Always) Coming", "Buffalo Wings", "Ice Fishing", "Curling (Yes, curling!)"];
   console.log(giphys);
 
-      // Function for dumping the JSON content for each button into the div
-      function displayGiphyInfo() {
-
-        var APIKey = "";
-// Example queryURL for Giphy API:
-    // var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC";
-    // var queryURL = "https://api.giphy.com/v1/gifs/search?q=buffalo+wings&api_key=dc6zaTOxFJmzC&limit=1";
-
-      // This GIPHY API sample code accomplishes the same as the AJAX method:
-      var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+bills+football&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
-          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+sabres+hockey&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
-          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=winter+is+coming&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
-          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=buffalo+wings&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
-          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=ice+fishing&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
-          var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=curling&rating=g&api_key=dc6zaTOxFJmzC&limit=1");
-          xhr.done(function(data) { console.log("success got data", data); });
-
-      }
-
-  $("#find-giphy").on("click", function(event) {
-    // event.preventDefault() can be used to prevent an event's default behavior.
-        // Here, it prevents the submit button from trying to submit a form when clicked
-        event.preventDefault();
-
-    // Check Stack: https://stackoverflow.com/questions/41620816/giphy-api-how-do-i-search-for-giphs
-          // Create the variable for the form input
-          var userInput = $('#giphy-input').val().trim();
-          // Change the input to suit the API (ie change spaces to +)
-              userInput = userInput.replace(/ /g, "+");
-          // Create the Giphy API URL for the user input field
-          var queryURL = 'http://api.giphy.com/v1/gifs/search?q=' + userInput + '&rating=g&api_key=dc6zaTOxFJmzC&limit=10';
-
-            $.ajax({
+  // Function for dumping the JSON content for each button into the div.  Need the rating and ??static & animated image urls??
+  function displayGifInfo() {
+        var giphyName = $(this).attr("data-item");
+        console.log(giphyName);
+        
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + giphyName + "&rating=g&api_key=dc6zaTOxFJmzC&limit=10";
+             
+              $.ajax({
               url: queryURL,
               method: 'GET'
             }).done(function(response) {
-              console.log(response.data[1].rating);
-              $("#giphy-dump").html("<h3> User Input: " +response.data[1].rating+ "</h3>");
-              $("#giphy-dump").append("<h3> User Input: " +response.data[1].url+ "</h3>");
-              // $("#dump").text(JSON.stringify(response.data[1]));
-            });
+              
 
-        });
+              for (i = 0; i < response.data.length; i++) {
+                console.log("GIF Rating: " + response.data[i].rating);
+                console.log("Static: " + response.data[i].images.fixed_height_still.url);
+                console.log("Animated: " + response.data[i].images.fixed_height.url);
+                $("#giphy-dump").text(response.data[i].rating);
+              }
+
+              renderButtons();
+            });
+      }
+
+  // Function to render the buttons from the giphys array. These buttons will be used to display the giphy data:
+    function renderButtons() {
+      $("#buttons-dump").empty();
+
+      for (var j = 0; j < giphys.length; j++) {
+        var a = $("<button>");
+        a.addClass("gif");
+        a.attr("data-item", giphys[j]);
+        a.text(giphys[j]);
+        $("#buttons-dump").append(a);
+        console.log(a);
+      }
+    }
+
+    // This function handles events where one button is clicked
+    $("#find-giphy").on("click", function(event) {
+        // event.preventDefault() prevents the form from trying to submit itself.
+        // We're using a form so that the user can hit enter instead of clicking the button if they want
+        event.preventDefault();
+
+        // This line will grab the text from the input box
+        var giphy = $("#giphy-input").val().trim();
+        // The giphy from the textbox is then added to our array
+        giphys.push(giphy);
+        console.log(giphy);
+
+        // calling renderButtons which handles the processing of our giphy array
+        renderButtons();
+      });
+
+      // links back to the generic function to capture Gif Info. Provides an event listener to all elements with class of .gif
+      $(document).on("click", ".gif", displayGifInfo);
+
+  renderButtons();
+  
+  
+  // $("#find-giphy").on("click", function(event) {
+  //   // event.preventDefault() can be used to prevent an event's default behavior.
+  //       // Here, it prevents the submit button from trying to submit a form when clicked
+  //       event.preventDefault();
+
+  //   // Check Stack: https://stackoverflow.com/questions/41620816/giphy-api-how-do-i-search-for-giphs
+  //         // Create the variable for the form input
+  //         var userInput = $('#giphy-input').val().trim();
+  //         // Change the input to suit the API (ie change spaces to +)
+  //             userInput = userInput.replace(/ /g, "+");
+          // Create the Giphy API URL for the user input field
+          // var queryURL = 'http://api.giphy.com/v1/gifs/search?q=' + userInput + '&rating=g&api_key=dc6zaTOxFJmzC&limit=10';
+
+          //   $.ajax({
+          //     url: queryURL,
+          //     method: 'GET'
+          //   }).done(function(response) {
+          //     console.log(response.data[1].rating);
+          //     $("#giphy-dump").html("<h3> User Input: " +response.data[1].rating+ "</h3>");
+          //     $("#giphy-dump").append("<h3> User Input: " +response.data[1].url+ "</h3>");
+          //     // $("#dump").text(JSON.stringify(response.data[1]));
+          //   });
+
+    
   
   
   </script>
