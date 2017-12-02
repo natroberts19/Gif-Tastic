@@ -3,61 +3,94 @@
 
 <head>
   <meta charset="utf-8">
-  <title>All Things Buffalo - Some GIPHY fun!</title>
+  <title>It's Raining Cats and Dogs</title>
 </head>
 
 <body>
-  <div class="container">
-<h1>All Things Buffalo - Some GIPHY fun!</h1>
-<div id="buttons-dump"></div>
-<div id="giphy-dump"></div>
+<h1>It's Raining Cats and Dogs - Some GIPHY fun!</h1>
+<div class="container">
+    <div class="row panel-row">
+        <div class="col-md-12">
+        <div id="buttons-dump"></div>
+      </div>
+    </div>
+
+    <div class="row panel-row">
+        <div class="col-md-2">
+            <form id="giphy-form">
+                <label for="giphy-input">Search for a GIPHY</label>
+                <input type="text" id="giphy-input"><br>
+                <!-- This button will trigger our AJAX call -->
+                <input id="find-giphy" type="submit" value="Giphy Search">
+              </form>
+      </div>  
+      <div class="col-md-10">
+            <div id="giphy-dump"></div>
+      </div>
+    </div>
+        
 <!-- This form will be where users input data about the gif's -->
-<form id="giphy-form">
-  <label for="giphy-input">Search for a GIPHY</label>
-  <input type="text" id="giphy-input"><br>
-  <!-- This button will trigger our AJAX call -->
-  <input id="find-giphy" type="submit" value="Giphy Search">
-</form>
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
   // Initial array of giphy buttons
-  var giphys = ["Buffalo Bills", "Buffalo Sabres", "Winter is (Always) Coming", "Buffalo Wings", "Ice Fishing", "Curling (Yes, curling!)"];
-  console.log(giphys);
+  var topics = ["Dogs and Cats", "Dressed Up Dogs", "Silly Puppies", "Cute Kittens", "Cats in Costumes"];
+  console.log(topics);
 
-  // Function for dumping the JSON content for each button into the div.  Need the rating and ??static & animated image urls??
+  // Function for dumping the JSON content for each button into the div.  Need the rating and static url
   function displayGifInfo() {
         var giphyName = $(this).attr("data-item");
         console.log(giphyName);
         
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + giphyName + "&rating=g&api_key=dc6zaTOxFJmzC&limit=10";
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + giphyName + "&rating=pg&api_key=dc6zaTOxFJmzC&limit=10";
              
               $.ajax({
               url: queryURL,
               method: 'GET'
             }).done(function(response) {
-              
+              $("#giphy-dump").empty();
 
               for (i = 0; i < response.data.length; i++) {
                 console.log("GIF Rating: " + response.data[i].rating);
                 console.log("Static: " + response.data[i].images.fixed_height_still.url);
-                console.log("Animated: " + response.data[i].images.fixed_height.url);
-                $("#giphy-dump").text(response.data[i].rating);
+                // console.log("Animated: " + response.data[i].images.fixed_height.url);
+                // $("#giphy-dump").text(response.data[i].rating);
+                // $("#giphy-dump").append(response.data[i].images.fixed_height.url);
+              
+                // Create a div to hold the gif's
+                var gifDiv = $("<div class='gif'>");
+                // Get the static URL for the image
+                var imgURL = response.data[i].images.fixed_height_still.url;
+                // Create an HTML element to store the image
+                var image = $("<img>").attr("src", imgURL);
+                // Append the image
+                gifDiv.append(image);
+                // Variable to store the rating data
+                var gifRating = response.data[i].rating;
+                // Create an HTML element paragraph to store the rating
+                var para = $("<p>").text("Rating: " +gifRating);
+                console.log(gifRating);
+                // Display the rating
+                gifDiv.append(para);
+                // Put the gifs above each other
+                $("#giphy-dump").prepend(gifDiv);
+                
               }
 
-              renderButtons();
+              // renderButtons();
             });
       }
 
-  // Function to render the buttons from the giphys array. These buttons will be used to display the giphy data:
+  // Function to render the buttons from the topics array. These buttons will be used to display the giphy data:
     function renderButtons() {
       $("#buttons-dump").empty();
 
-      for (var j = 0; j < giphys.length; j++) {
+      for (var j = 0; j < topics.length; j++) {
         var a = $("<button>");
         a.addClass("gif");
-        a.attr("data-item", giphys[j]);
-        a.text(giphys[j]);
+        a.attr("data-item", topics[j]);
+        a.text(topics[j]);
         $("#buttons-dump").append(a);
         console.log(a);
       }
@@ -72,7 +105,7 @@
         // This line will grab the text from the input box
         var giphy = $("#giphy-input").val().trim();
         // The giphy from the textbox is then added to our array
-        giphys.push(giphy);
+        topics.push(giphy);
         console.log(giphy);
 
         // calling renderButtons which handles the processing of our giphy array
