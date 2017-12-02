@@ -3,11 +3,11 @@
 
 <head>
   <meta charset="utf-8">
-  <title>It's Raining Cats and Dogs</title>
+  <title>Saturday Night Live - Best Hosts</title>
 </head>
 
 <body>
-<h1>It's Raining Cats and Dogs - Some GIPHY fun!</h1>
+<h1>Saturday Night Live - Best Hosts</h1>
 <div class="container">
     <div class="row panel-row">
         <div class="col-md-12">
@@ -17,6 +17,7 @@
 
     <div class="row panel-row">
         <div class="col-md-2">
+          <!-- This form will be where users input data about the gif's -->
             <form id="giphy-form">
                 <label for="giphy-input">Search for a GIPHY</label>
                 <input type="text" id="giphy-input"><br>
@@ -28,124 +29,10 @@
             <div id="giphy-dump"></div>
       </div>
     </div>
+    </div>
         
-<!-- This form will be where users input data about the gif's -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/javascript/giphy.js"></script>
 
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript">
-  // Initial array of giphy buttons
-  var topics = ["Dogs and Cats", "Dressed Up Dogs", "Silly Puppies", "Cute Kittens", "Cats in Costumes"];
-  console.log(topics);
-
-  // Function for dumping the JSON content for each button into the div.  Need the rating and static url
-  function displayGifInfo() {
-        var giphyName = $(this).attr("data-item");
-        console.log(giphyName);
-        
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + giphyName + "&rating=pg&api_key=dc6zaTOxFJmzC&limit=10";
-             
-              $.ajax({
-              url: queryURL,
-              method: 'GET'
-            }).done(function(response) {
-              $("#giphy-dump").empty();
-
-              for (i = 0; i < response.data.length; i++) {
-                console.log("GIF Rating: " + response.data[i].rating);
-                console.log("Static: " + response.data[i].images.fixed_height_still.url);
-                // console.log("Animated: " + response.data[i].images.fixed_height.url);
-                // $("#giphy-dump").text(response.data[i].rating);
-                // $("#giphy-dump").append(response.data[i].images.fixed_height.url);
-              
-                // Create a div to hold the gif's
-                var gifDiv = $("<div class='gif'>");
-                // Get the static URL for the image
-                var imgURL = response.data[i].images.fixed_height_still.url;
-                // Create an HTML element to store the image
-                var image = $("<img>").attr("src", imgURL);
-                // Append the image
-                gifDiv.append(image);
-                // Variable to store the rating data
-                var gifRating = response.data[i].rating;
-                // Create an HTML element paragraph to store the rating
-                var para = $("<p>").text("Rating: " +gifRating);
-                console.log(gifRating);
-                // Display the rating
-                gifDiv.append(para);
-                // Put the gifs above each other
-                $("#giphy-dump").prepend(gifDiv);
-                
-              }
-
-              // renderButtons();
-            });
-      }
-
-  // Function to render the buttons from the topics array. These buttons will be used to display the giphy data:
-    function renderButtons() {
-      $("#buttons-dump").empty();
-
-      for (var j = 0; j < topics.length; j++) {
-        var a = $("<button>");
-        a.addClass("gif");
-        a.attr("data-item", topics[j]);
-        a.text(topics[j]);
-        $("#buttons-dump").append(a);
-        console.log(a);
-      }
-    }
-
-    // This function handles events where one button is clicked
-    $("#find-giphy").on("click", function(event) {
-        // event.preventDefault() prevents the form from trying to submit itself.
-        // We're using a form so that the user can hit enter instead of clicking the button if they want
-        event.preventDefault();
-
-        // This line will grab the text from the input box
-        var giphy = $("#giphy-input").val().trim();
-        // The giphy from the textbox is then added to our array
-        topics.push(giphy);
-        console.log(giphy);
-
-        // calling renderButtons which handles the processing of our giphy array
-        renderButtons();
-      });
-
-      // links back to the generic function to capture Gif Info. Provides an event listener to all elements with class of .gif
-      $(document).on("click", ".gif", displayGifInfo);
-
-  renderButtons();
-  
-  
-  // $("#find-giphy").on("click", function(event) {
-  //   // event.preventDefault() can be used to prevent an event's default behavior.
-  //       // Here, it prevents the submit button from trying to submit a form when clicked
-  //       event.preventDefault();
-
-  //   // Check Stack: https://stackoverflow.com/questions/41620816/giphy-api-how-do-i-search-for-giphs
-  //         // Create the variable for the form input
-  //         var userInput = $('#giphy-input').val().trim();
-  //         // Change the input to suit the API (ie change spaces to +)
-  //             userInput = userInput.replace(/ /g, "+");
-          // Create the Giphy API URL for the user input field
-          // var queryURL = 'http://api.giphy.com/v1/gifs/search?q=' + userInput + '&rating=g&api_key=dc6zaTOxFJmzC&limit=10';
-
-          //   $.ajax({
-          //     url: queryURL,
-          //     method: 'GET'
-          //   }).done(function(response) {
-          //     console.log(response.data[1].rating);
-          //     $("#giphy-dump").html("<h3> User Input: " +response.data[1].rating+ "</h3>");
-          //     $("#giphy-dump").append("<h3> User Input: " +response.data[1].url+ "</h3>");
-          //     // $("#dump").text(JSON.stringify(response.data[1]));
-          //   });
-
-    
-  
-  
-  </script>
-
-</body>
-
-</html>
+  </body>
+  </html>
