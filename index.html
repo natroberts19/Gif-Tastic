@@ -3,36 +3,43 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" type="text/css" href="https://bootswatch.com/united/bootstrap.min.css"> -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Sacramento" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
   <title>Saturday Night Live - Best Hosts</title>
 </head>
 
 <body>
-<h1>Saturday Night Live - Best Hosts</h1>
-<div class="container">
-    <div class="row panel-row">
-        <div class="col-md-12">
+
+  <div class="container">
+    <div class="row">
+      <h1>Saturday Night Live - Best Hosts</h1>
+      <div class="col-xs-12">
+        <form id="giphy-form">
+          <label for="giphy-input">Find your own GIPHY:</label>
+          <input type="text" id="giphy-input">
+          <br>
+          <input id="find-giphy" type="submit" value="Search">
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">
         <div id="buttons-dump"></div>
       </div>
-    </div>
-
-    <div class="row panel-row">
-        <div class="col-md-2">
-          <!-- This form will be where users input data about the gif's -->
-            <form id="giphy-form">
-                <label for="giphy-input">Search for a GIPHY</label>
-                <input type="text" id="giphy-input"><br>
-                <!-- This button will trigger our AJAX call -->
-                <input id="find-giphy" type="submit" value="Giphy Search">
-              </form>
-      </div>  
-      <div class="col-md-10">
-            <div id="giphy-dump"></div>
+      <div class="col-xs-9">
+        <div id="giphy-dump"></div>
       </div>
     </div>
-    </div>
-        
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/javascript/giphy.js"></script>
+  </div>
 
-  </body>
-  </html>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="assets/javascript/giphy.js"></script>
+
+</body>
+
+</html>

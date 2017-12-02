@@ -66,7 +66,7 @@ function renderButtons() {
 
     for (var j = 0; j < topics.length; j++) {
         var a = $("<button>");
-        a.addClass("gif");
+        a.addClass("gify");
         a.attr("data-item", topics[j]);
         a.text(topics[j]);
         $("#buttons-dump").append(a);
@@ -91,6 +91,6 @@ $("#find-giphy").on("click", function (event) {
 });
 
 // links back to the generic function to capture Gif Info. Provides an event listener to all elements with class of .gif
-$(document).on("click", ".gif", displayGifInfo);
+$(document).on("click", ".gify", displayGifInfo);
 
 renderButtons();
