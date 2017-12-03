@@ -7,38 +7,48 @@ body {
 p {
     color: rgb(53, 52, 52);
     font-family: 'Lato', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 h1 {
-    font-size: 36px;
-    font-family: 'Lato', sans-serif;
+    font-size: 48px;
+    font-family: 'Sacramento', sans-serif;
+}
+
+#header {
+    margin-bottom: 10px;
+    background-color: beige;
+}
+
+#giphy-form {
+    background-color: beige;
 }
 
 #find-giphy {
     color: #ffffff;
-    background: rgb(255, 136, 0);
-    padding: 10px 10px 10px 10px;
+    background: blue;
     margin-bottom: 20px;
+    padding: 5px 10px 5px 10px;
     font-family: 'Lato', sans-serif;
     font-size: 18px;
 }
 
 .gif {
     background: lightgray;
-    padding: 10px 10px 10px 10px;
+    padding: 20px 0px 20px 0px;
     font-family: 'Lato', sans-serif;
-    font-size: 22px;
     margin: 10 px;
     text-align: center;
 }
 
-.gify {
+.button-style {
     color: blue;
     background: lightgray;
-    padding: 10px 10px 10px 10px;
     font-family: 'Lato', sans-serif;
     font-size: 20px;
-    margin-top: 20 px;
+    margin-top: 10px;
     text-align: center;
+    width: 210px;
+    height: auto;
+    padding: 10px;
 }
