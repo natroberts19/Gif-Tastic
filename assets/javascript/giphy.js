@@ -16,50 +16,52 @@ function displayGifInfo() {
         $("#giphy-dump").empty();
 
         // Create a forEach function to iterate through the new array of gif responses received from JSON
-            response.data.forEach(function(value, i) {
+        response.data.forEach(function (value, i) {
             // Create divs to hold the gif's
             var gifDiv = $("<div class='gif'>");
             // Get the static URL for the image from the JSON.
             var staticURL = response.data[i].images.fixed_height_still.url;
             console.log("Static Image: " + response.data[i].images.fixed_height_still.url);
-             // Get the animated URL for the image from the JSON.
+            // Get the animated URL for the image from the JSON.
             var animatedURL = response.data[i].images.fixed_height.url;
-             console.log("Animated Image: " + response.data[i].images.fixed_height.url);
+            console.log("Animated Image: " + response.data[i].images.fixed_height.url);
             // Create an HTML image element to store the static version of the image instead of the URL.
             var image = $("<img>").attr("src", staticURL);
             // Append the images to the gifDivs.
             gifDiv.append(image);
-           
-            // Add an attribute to gifDiv so all gifs have a the same state.
-            gifDiv.attr("data-state", "static");
+
+            // NEW: added class of "gif" to image and changed gifDiv to image for the other attributes so that only the image is clickable and not the whole div:
+            image.addClass("gif");
+            // Add an attribute to image so all gifs have the same state.
+            image.attr("data-state", "static");
             // Now add an attribute to set gifs to a still state.
-            gifDiv.attr("data-static", staticURL);
+            image.attr("data-static", staticURL);
             // Now add an attribute to set gifs to animate.
-            gifDiv.attr("data-animate", animatedURL);
+            image.attr("data-animate", animatedURL);
 
             // Create a variable to store the rating data.
             var gifRating = response.data[i].rating;
             // Create an HTML paragraph element to store the rating.
             var paragraph = $("<p>").text("Rating: " + gifRating);
-            console.log("gifRating: " +gifRating);
-            // Display the rating
+            console.log("gifRating: " + gifRating);
+            // Append the rating under the image.
             gifDiv.append(paragraph);
             // Put the gifs below each other
             $("#giphy-dump").append(gifDiv);
         })
         // This function will make each gif clickable. When clicked the gif will become animated. Click again to pause. Apply to the .gif class which has already been added to the gifDiv.
         $(".gif").on("click", function () {
-           
+
             // Check if the variable state of giphyName is equal to 'still'.
             var state = $(this).attr("data-state");
-            console.log("State of the gif: " +state);
+            console.log("State of the gif: " + state);
 
             // Then create if/else to toggle between static and animated.
             if (state === "static") {
-                $(this).attr("src", $(this).attr("animatedURL"));
+                $(this).attr("src", $(this).attr("data-animate"));
                 $(this).attr("data-state", "animate");
             } else {
-                $(this).attr("src", $(this).attr("staticURL"));
+                $(this).attr("src", $(this).attr("data-static"));
                 $(this).attr("data-state", "static");
             }
         })
@@ -72,8 +74,10 @@ function renderButtons() {
 
     for (var j = 0; j < topics.length; j++) {
         var a = $("<button>");
-        a.addClass("gif");
-        a.addClass("button-style");
+        // NEW: commented out the addClass of gif:
+        // a.addClass("gif");
+        // NEW: added attribute for the button-style id:
+        a.attr("id", "button-style");
         a.attr("data-item", topics[j]);
         a.attr("data-state", topics[j]);
         a.text(topics[j]);
@@ -94,14 +98,16 @@ $("#find-giphy").on("click", function (event) {
     // The giphy input category from the textbox is then added to the topics array.
     topics.push(giphy);
     console.log(giphy);
-    
+
     // Call the renderButtons function which handles the processing of our giphy array
     renderButtons();
     // Clear the input text from the Giphy form after clicking the Add button.
     $("#giphy-input").val("");
 });
 
-// links back to the generic function to capture Gif Info. Provides an event listener to all elements with class of .gif
+// Links back to the generic function to capture Gif Info. Provides an event listener to all elements with class of .gif
 $(document).on("click", ".gif", displayGifInfo);
+// NEW: links back to the generic function to capture Gif Info. Provides an event listener to all elements with #button-style
+$(document).on("click", "#button-style", displayGifInfo);
 
 renderButtons();
