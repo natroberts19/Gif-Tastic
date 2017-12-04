@@ -15,50 +15,56 @@ function displayGifInfo() {
     }).done(function (response) {
         $("#giphy-dump").empty();
 
-        for (i = 0; i < response.data.length; i++) {
-            console.log("GIF Rating: " + response.data[i].rating);
-
-            // Create a div to hold the gif's
+        // Create a forEach function to iterate through the new array of gif responses received from JSON
+            response.data.forEach(function(value, i) {
+            // Create divs to hold the gif's
             var gifDiv = $("<div class='gif'>");
-            // Get the static URL for the image
+            // Get the static URL for the image from the JSON.
             var staticURL = response.data[i].images.fixed_height_still.url;
             console.log("Static Image: " + response.data[i].images.fixed_height_still.url);
-             // Get the animated URL for the image
+             // Get the animated URL for the image from the JSON.
             var animatedURL = response.data[i].images.fixed_height.url;
              console.log("Animated Image: " + response.data[i].images.fixed_height.url);
-            // Create an HTML image element to store the image and attach either a static or animated state
+            // Create an HTML image element to store the static version of the image instead of the URL.
             var image = $("<img>").attr("src", staticURL);
-            // Append the image to the gifDiv.
+            // Append the images to the gifDivs.
             gifDiv.append(image);
+           
+            // Add an attribute to gifDiv so all gifs have a the same state.
+            gifDiv.attr("data-state", "static");
+            // Now add an attribute to set gifs to a still state.
+            gifDiv.attr("data-static", staticURL);
+            // Now add an attribute to set gifs to animate.
+            gifDiv.attr("data-animate", animatedURL);
+
             // Create a variable to store the rating data.
             var gifRating = response.data[i].rating;
             // Create an HTML paragraph element to store the rating.
             var paragraph = $("<p>").text("Rating: " + gifRating);
-            console.log(gifRating);
+            console.log("gifRating: " +gifRating);
             // Display the rating
             gifDiv.append(paragraph);
             // Put the gifs below each other
             $("#giphy-dump").append(gifDiv);
-        }
+        })
         // This function will make each gif clickable. When clicked the gif will become animated. Click again to pause. Apply to the .gif class which has already been added to the gifDiv.
         $(".gif").on("click", function () {
            
-            // Check if the variable state is equal to 'still'.
+            // Check if the variable state of giphyName is equal to 'still'.
             var state = $(this).attr("data-state");
-            console.log(state);
+            console.log("State of the gif: " +state);
 
             // Then create if/else to toggle between static and animated.
-            if (state === "still") {
+            if (state === "static") {
                 $(this).attr("src", $(this).attr("animatedURL"));
                 $(this).attr("data-state", "animate");
             } else {
                 $(this).attr("src", $(this).attr("staticURL"));
-                $(this).attr("data-state", "still");
+                $(this).attr("data-state", "static");
             }
         })
     });
 }
-
 
 // This function creates the buttons from the topics array. These buttons will be used to show the giphys by category:
 function renderButtons() {
